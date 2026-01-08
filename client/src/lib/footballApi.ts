@@ -264,5 +264,10 @@ export const COMPETITION_CODES = {
   EL: "UEFA Europa League",
   WC: "FIFA World Cup",
   EC: "European Championship",
-  ASL: "Saudi Pro League", // Note: Some codes might vary depending on API version
+  ASL: "Saudi Pro League",
+  MLS: "Major League Soccer",
+  QAFC: "AFC WC Qualification",
+  QCAF: "CAF WC Qualification",
+  AFCON: "Africa Cup of Nations",
+  AC: "Asian Cup",
 };

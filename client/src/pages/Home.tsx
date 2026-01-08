@@ -3,153 +3,83 @@ import Sidebar from "@/components/Sidebar";
 import HeroBanner from "@/components/HeroBanner";
 import MatchCard from "@/components/MatchCard";
 import { Button } from "@/components/ui/button";
-import { Loader2, RefreshCw } from "lucide-react";
+import { Loader2, RefreshCw, Zap, Calendar as CalendarIcon, Trophy as TrophyIcon } from "lucide-react";
 import { Link } from "wouter";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
-
-interface Match {
-  id: string;
-  homeTeam: string;
-  awayTeam: string;
-  homeScore?: number;
-  awayScore?: number;
-  status: "SCHEDULED" | "LIVE" | "FINISHED" | "POSTPONED";
-  date: string;
-  competition: string;
-  matchday?: number;
-}
+import { useMatches } from "@/hooks/useMatches";
 
 export default function Home() {
   const { t, isRTL } = useLanguage();
-  const [matches, setMatches] = useState<Match[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { matches, loading, error, refetch } = useMatches();
 
-  useEffect(() => {
-    fetchMatches();
-  }, []);
-
-  const fetchMatches = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      // Simulated API call - will be replaced with actual Football-Data API
-      const mockMatches: Match[] = [
-        {
-          id: "1",
-          homeTeam: "Manchester United",
-          awayTeam: "Liverpool",
-          homeScore: 2,
-          awayScore: 1,
-          status: "FINISHED",
-          date: "2026-01-08T20:00:00Z",
-          competition: "Premier League",
-          matchday: 21,
-        },
-        {
-          id: "2",
-          homeTeam: "Real Madrid",
-          awayTeam: "Barcelona",
-          homeScore: 1,
-          awayScore: 1,
-          status: "LIVE",
-          date: "2026-01-08T21:00:00Z",
-          competition: "La Liga",
-          matchday: 19,
-        },
-        {
-          id: "3",
-          homeTeam: "Bayern Munich",
-          awayTeam: "Borussia Dortmund",
-          status: "SCHEDULED",
-          date: "2026-01-09T19:30:00Z",
-          competition: "Bundesliga",
-          matchday: 18,
-        },
-        {
-          id: "4",
-          homeTeam: "Paris Saint-Germain",
-          awayTeam: "Marseille",
-          status: "SCHEDULED",
-          date: "2026-01-09T20:00:00Z",
-          competition: "Ligue 1",
-          matchday: 20,
-        },
-        {
-          id: "5",
-          homeTeam: "Juventus",
-          awayTeam: "Inter Milan",
-          homeScore: 0,
-          awayScore: 2,
-          status: "FINISHED",
-          date: "2026-01-07T20:45:00Z",
-          competition: "Serie A",
-          matchday: 19,
-        },
-      ];
-      setMatches(mockMatches);
-    } catch (err) {
-      setError("Failed to fetch matches. Please try again.");
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const liveMatches = matches.filter((m) => m.status === "LIVE");
-  const upcomingMatches = matches.filter((m) => m.status === "SCHEDULED");
+  const liveMatches = matches.filter((m) => m.status === "LIVE" || m.status === "IN_PLAY");
+  const upcomingMatches = matches.filter((m) => m.status === "SCHEDULED" || m.status === "TIMED");
   const finishedMatches = matches.filter((m) => m.status === "FINISHED");
 
   return (
     <div className="flex min-h-screen bg-background">
-      {/* Sidebar */}
       <Sidebar activeRoute="/" />
-
-      {/* Main Content */}
-      <main className={cn("flex-1", isRTL ? "mr-64" : "ml-64")}>
-        {/* Hero Banner */}
+      <main className={cn("flex-1 transition-all duration-300", isRTL ? "mr-64" : "ml-64")}>
         <HeroBanner
           title={t.liveFootball}
           subtitle={t.realTimeUpdates}
           backgroundImage="/images/hero-stadium.jpg"
         />
 
-        {/* Content Container */}
         <div className="container mx-auto px-4 py-12">
-          {/* {t.refresh} Button */}
-          <div className="flex justify-between items-center mb-8">
-         <h2 className="text-2xl font-bold font-heading mb-8">{t.todayMatches}</h2>           <Button
-              onClick={fetchMatches}
+          <div className="flex justify-between items-center mb-10">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <Zap className="w-6 h-6 text-primary" />
+              </div>
+              <h2 className="text-3xl font-black font-heading tracking-tight">{t.todayMatches}</h2>
+            </div>
+            <Button
+              onClick={refetch}
               disabled={loading}
               variant="outline"
               size="sm"
-              className="gap-2"
+              className="gap-2 rounded-full px-6 hover:bg-primary hover:text-primary-foreground transition-all duration-300"
             >
-              <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
+              <RefreshCw className={cn("w-4 h-4", loading && "animate-spin")} />
               {t.refresh}
             </Button>
           </div>
 
           {error && (
-            <div className="bg-destructive/10 border border-destructive text-destructive p-4 rounded-lg mb-6">
-              {error}
+            <div className="bg-destructive/10 border border-destructive/20 text-destructive p-6 rounded-2xl mb-8 flex items-center gap-4">
+              <div className="p-2 bg-destructive/20 rounded-full">
+                <Zap className="w-5 h-5" />
+              </div>
+              <div>
+                <p className="font-bold">API Connection Issue</p>
+                <p className="text-sm opacity-80">{error}</p>
+              </div>
             </div>
           )}
 
           {loading ? (
-            <div className="flex justify-center items-center py-12">
-              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="h-48 bg-card/50 animate-pulse rounded-2xl border border-border" />
+              ))}
             </div>
           ) : (
-            <div className="space-y-8">
+            <div className="space-y-12">
               {/* Live Matches */}
               {liveMatches.length > 0 && (
-                <section>
-                  <h3 className="text-xl font-bold font-heading mb-4 text-primary">
-                    🔴 {t.liveNow} ({liveMatches.length})
-                  </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <section className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                  <div className="flex items-center gap-2 mb-6">
+                    <span className="relative flex h-3 w-3">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                    </span>
+                    <h3 className="text-xl font-bold font-heading text-red-500 uppercase tracking-wider">
+                      {t.liveNow} ({liveMatches.length})
+                    </h3>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {liveMatches.map((match) => (
                       <MatchCard key={match.id} {...match} />
                     ))}
@@ -159,11 +89,14 @@ export default function Home() {
 
               {/* Upcoming Matches */}
               {upcomingMatches.length > 0 && (
-                <section>
-                  <h3 className="text-xl font-bold font-heading mb-4">
-                    📅 {t.upcomingMatches} ({upcomingMatches.length})
-                  </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <section className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+                  <div className="flex items-center gap-2 mb-6">
+                    <CalendarIcon className="w-5 h-5 text-primary" />
+                    <h3 className="text-xl font-bold font-heading uppercase tracking-wider">
+                      {t.upcomingMatches} ({upcomingMatches.length})
+                    </h3>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {upcomingMatches.map((match) => (
                       <MatchCard key={match.id} {...match} />
                     ))}
@@ -173,11 +106,14 @@ export default function Home() {
 
               {/* Finished Matches */}
               {finishedMatches.length > 0 && (
-                <section>
-                  <h3 className="text-xl font-bold font-heading mb-4 text-muted-foreground">
-                    ✅ {t.recentResults} ({finishedMatches.length})
-                  </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <section className="animate-in fade-in slide-in-from-bottom-4 duration-1000">
+                  <div className="flex items-center gap-2 mb-6">
+                    <TrophyIcon className="w-5 h-5 text-muted-foreground" />
+                    <h3 className="text-xl font-bold font-heading text-muted-foreground uppercase tracking-wider">
+                      {t.recentResults} ({finishedMatches.length})
+                    </h3>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 opacity-80 hover:opacity-100 transition-opacity duration-300">
                     {finishedMatches.map((match) => (
                       <MatchCard key={match.id} {...match} />
                     ))}
@@ -187,9 +123,12 @@ export default function Home() {
 
               {/* No Matches */}
               {matches.length === 0 && (
-                <div className="text-center py-12">
-                  <p className="text-muted-foreground mb-4">{t.noMatches}</p>
-                  <Button onClick={fetchMatches} variant="outline">
+                <div className="text-center py-20 bg-card/30 rounded-3xl border border-dashed border-border">
+                  <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center mx-auto mb-6">
+                    <CalendarIcon className="w-10 h-10 text-muted-foreground" />
+                  </div>
+                  <p className="text-xl font-bold text-muted-foreground mb-6">{t.noMatches}</p>
+                  <Button onClick={refetch} variant="default" className="rounded-full px-8">
                     {t.tryAgain}
                   </Button>
                 </div>

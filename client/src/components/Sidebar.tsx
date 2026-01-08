@@ -19,23 +19,28 @@ export default function Sidebar({ activeRoute }: SidebarProps) {
 
   return (
     <aside className={cn(
-      "fixed top-0 h-screen w-64 bg-sidebar text-sidebar-foreground flex flex-col border-sidebar-border",
+      "fixed top-0 h-screen w-64 bg-sidebar text-sidebar-foreground flex flex-col border-sidebar-border shadow-2xl z-50 transition-all duration-300",
       isRTL ? "right-0 border-l" : "left-0 border-r"
     )}>
       {/* Logo Section */}
-      <div className="p-6 border-b border-sidebar-border">
+      <div className="p-8 border-b border-sidebar-border/50">
         <Link href="/">
-          <a className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-            <div className="w-10 h-10 bg-sidebar-primary rounded-lg flex items-center justify-center">
-              <Trophy className="w-6 h-6 text-sidebar-primary-foreground" />
+          <a className="flex items-center gap-3 hover:scale-105 transition-transform">
+            <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/70 rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
+              <Trophy className="w-7 h-7 text-primary-foreground" />
             </div>
-            <h1 className="text-xl font-bold font-heading">FootScore</h1>
+            <div>
+              <h1 className="text-2xl font-black font-heading tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-sidebar-foreground to-sidebar-foreground/70">
+                FootScore
+              </h1>
+              <p className="text-[10px] uppercase tracking-widest font-bold text-primary/60">Pro Dashboard</p>
+            </div>
           </a>
         </Link>
       </div>
 
       {/* Navigation Items */}
-      <nav className="flex-1 p-4 space-y-2">
+      <nav className="flex-1 p-4 space-y-1 mt-4">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeRoute === item.href;
@@ -43,14 +48,26 @@ export default function Sidebar({ activeRoute }: SidebarProps) {
             <Link key={item.href} href={item.href}>
               <a
                 className={cn(
-                  "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200",
+                  "group flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-300 relative overflow-hidden",
                   isActive
-                    ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                    : "text-sidebar-foreground hover:bg-sidebar-border"
+                    ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
+                    : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent/50"
                 )}
               >
-                <Icon className="w-5 h-5" />
-                <span className="font-medium">{item.label}</span>
+                {isActive && (
+                  <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-50" />
+                )}
+                <Icon className={cn(
+                  "w-5 h-5 transition-transform duration-300 group-hover:scale-110",
+                  isActive ? "text-primary-foreground" : "text-primary/60"
+                )} />
+                <span className="font-bold tracking-wide">{item.label}</span>
+                {isActive && (
+                  <div className={cn(
+                    "absolute w-1.5 h-6 bg-primary-foreground rounded-full",
+                    isRTL ? "left-0" : "right-0"
+                  )} />
+                )}
               </a>
             </Link>
           );
