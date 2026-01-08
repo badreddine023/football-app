@@ -258,7 +258,11 @@ export const COMPETITION_CODES = {
   FL1: "Ligue 1",
   PPL: "Primeira Liga",
   DED: "Eredivisie",
+  BSA: "Campeonato Brasileiro Série A",
+  CLI: "Copa Libertadores",
   CL: "UEFA Champions League",
   EL: "UEFA Europa League",
   WC: "FIFA World Cup",
+  EC: "European Championship",
+  ASL: "Saudi Pro League", // Note: Some codes might vary depending on API version
 };

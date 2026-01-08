@@ -1,5 +1,6 @@
 import { Link } from "wouter";
-import { BarChart3, Calendar, Trophy, TrendingUp, Home } from "lucide-react";
+import { BarChart3, Calendar, Trophy, TrendingUp, Home, Languages } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 
 interface SidebarProps {
@@ -7,16 +8,20 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ activeRoute }: SidebarProps) {
+  const { t, language, setLanguage, isRTL } = useLanguage();
   const navItems = [
-    { href: "/", label: "Home", icon: Home },
-    { href: "/fixtures", label: "Fixtures", icon: Calendar },
-    { href: "/results", label: "Results", icon: Trophy },
-    { href: "/standings", label: "Standings", icon: BarChart3 },
-    { href: "/predictions", label: "Predictions", icon: TrendingUp },
+    { href: "/", label: t.home, icon: Home },
+    { href: "/fixtures", label: t.fixtures, icon: Calendar },
+    { href: "/results", label: t.results, icon: Trophy },
+    { href: "/standings", label: t.standings, icon: BarChart3 },
+    { href: "/predictions", label: t.predictions, icon: TrendingUp },
   ];
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-64 bg-sidebar text-sidebar-foreground flex flex-col border-r border-sidebar-border">
+    <aside className={cn(
+      "fixed top-0 h-screen w-64 bg-sidebar text-sidebar-foreground flex flex-col border-sidebar-border",
+      isRTL ? "right-0 border-l" : "left-0 border-r"
+    )}>
       {/* Logo Section */}
       <div className="p-6 border-b border-sidebar-border">
         <Link href="/">
@@ -53,9 +58,18 @@ export default function Sidebar({ activeRoute }: SidebarProps) {
       </nav>
 
       {/* Footer */}
-      <div className="p-4 border-t border-sidebar-border text-xs text-sidebar-foreground/60">
-        <p>© 2026 FootScore</p>
-        <p>Football Data & Predictions</p>
+      <div className="p-4 border-t border-sidebar-border space-y-4">
+        <button
+          onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
+          className="flex items-center gap-3 px-4 py-2 w-full rounded-lg hover:bg-sidebar-border transition-colors text-sm"
+        >
+          <Languages className="w-4 h-4" />
+          <span>{language === 'en' ? 'العربية' : 'English'}</span>
+        </button>
+        <div className="text-xs text-sidebar-foreground/60">
+          <p>© 2026 FootScore</p>
+          <p>{t.liveFootball}</p>
+        </div>
       </div>
     </aside>
   );

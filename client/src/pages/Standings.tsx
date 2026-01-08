@@ -1,5 +1,7 @@
 import Sidebar from "@/components/Sidebar";
 import HeroBanner from "@/components/HeroBanner";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
@@ -17,6 +19,7 @@ interface StandingsRow {
 }
 
 export default function Standings() {
+  const { t, isRTL } = useLanguage();
   const premierLeagueStandings: StandingsRow[] = [
     {
       position: 1,
@@ -83,10 +86,10 @@ export default function Standings() {
   return (
     <div className="flex min-h-screen bg-background">
       <Sidebar activeRoute="/standings" />
-      <main className="flex-1 ml-64">
+      <main className={cn("flex-1", isRTL ? "mr-64" : "ml-64")}>
         <HeroBanner
-          title="League Standings"
-          subtitle="Current standings and statistics from major football leagues"
+          title={t.leagueStandings}
+          subtitle={t.currentStandings}
         />
         <div className="container mx-auto px-4 py-12">
           <Card>
@@ -96,16 +99,16 @@ export default function Standings() {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead className="w-12">Pos</TableHead>
-                      <TableHead>Team</TableHead>
-                      <TableHead className="text-center">P</TableHead>
-                      <TableHead className="text-center">W</TableHead>
-                      <TableHead className="text-center">D</TableHead>
-                      <TableHead className="text-center">L</TableHead>
-                      <TableHead className="text-center">GF</TableHead>
-                      <TableHead className="text-center">GA</TableHead>
-                      <TableHead className="text-center">GD</TableHead>
-                      <TableHead className="text-center font-bold">Pts</TableHead>
+                      <TableHead className="w-12">{t.pos}</TableHead>
+                      <TableHead>{t.team}</TableHead>
+                      <TableHead className="text-center">{t.played}</TableHead>
+                      <TableHead className="text-center">{t.won}</TableHead>
+                      <TableHead className="text-center">{t.drawn}</TableHead>
+                      <TableHead className="text-center">{t.lost}</TableHead>
+                      <TableHead className="text-center">{t.gf}</TableHead>
+                      <TableHead className="text-center">{t.ga}</TableHead>
+                      <TableHead className="text-center">{t.gd}</TableHead>
+                      <TableHead className="text-center font-bold">{t.pts}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>

@@ -5,6 +5,8 @@ import MatchCard from "@/components/MatchCard";
 import { Button } from "@/components/ui/button";
 import { Loader2, RefreshCw } from "lucide-react";
 import { Link } from "wouter";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { cn } from "@/lib/utils";
 
 interface Match {
   id: string;
@@ -19,6 +21,7 @@ interface Match {
 }
 
 export default function Home() {
+  const { t, isRTL } = useLanguage();
   const [matches, setMatches] = useState<Match[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -104,20 +107,19 @@ export default function Home() {
       <Sidebar activeRoute="/" />
 
       {/* Main Content */}
-      <main className="flex-1 ml-64">
+      <main className={cn("flex-1", isRTL ? "mr-64" : "ml-64")}>
         {/* Hero Banner */}
         <HeroBanner
-          title="Live Football Scores & Predictions"
-          subtitle="Get real-time updates on matches, standings, and predictions from all major leagues"
+          title={t.liveFootball}
+          subtitle={t.realTimeUpdates}
           backgroundImage="/images/hero-stadium.jpg"
         />
 
         {/* Content Container */}
         <div className="container mx-auto px-4 py-12">
-          {/* Refresh Button */}
+          {/* {t.refresh} Button */}
           <div className="flex justify-between items-center mb-8">
-            <h2 className="text-2xl font-bold font-heading">Today's Matches</h2>
-            <Button
+         <h2 className="text-2xl font-bold font-heading mb-8">{t.todayMatches}</h2>           <Button
               onClick={fetchMatches}
               disabled={loading}
               variant="outline"
@@ -125,7 +127,7 @@ export default function Home() {
               className="gap-2"
             >
               <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
-              Refresh
+              {t.refresh}
             </Button>
           </div>
 
@@ -145,7 +147,7 @@ export default function Home() {
               {liveMatches.length > 0 && (
                 <section>
                   <h3 className="text-xl font-bold font-heading mb-4 text-primary">
-                    🔴 Live Now ({liveMatches.length})
+                    🔴 {t.liveNow} ({liveMatches.length})
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {liveMatches.map((match) => (
@@ -159,7 +161,7 @@ export default function Home() {
               {upcomingMatches.length > 0 && (
                 <section>
                   <h3 className="text-xl font-bold font-heading mb-4">
-                    📅 Upcoming Matches ({upcomingMatches.length})
+                    📅 {t.upcomingMatches} ({upcomingMatches.length})
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {upcomingMatches.map((match) => (
@@ -173,7 +175,7 @@ export default function Home() {
               {finishedMatches.length > 0 && (
                 <section>
                   <h3 className="text-xl font-bold font-heading mb-4 text-muted-foreground">
-                    ✅ Recent Results ({finishedMatches.length})
+                    ✅ {t.recentResults} ({finishedMatches.length})
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {finishedMatches.map((match) => (
@@ -186,9 +188,9 @@ export default function Home() {
               {/* No Matches */}
               {matches.length === 0 && (
                 <div className="text-center py-12">
-                  <p className="text-muted-foreground mb-4">No matches found</p>
+                  <p className="text-muted-foreground mb-4">{t.noMatches}</p>
                   <Button onClick={fetchMatches} variant="outline">
-                    Try Again
+                    {t.tryAgain}
                   </Button>
                 </div>
               )}
@@ -196,15 +198,15 @@ export default function Home() {
               {/* CTA Section */}
               <section className="mt-12 p-8 bg-gradient-to-r from-primary/10 to-accent/10 rounded-lg border border-primary/20">
                 <h3 className="text-2xl font-bold font-heading mb-3">
-                  Want Predictions?
+                  {t.wantPredictions}
                 </h3>
                 <p className="text-muted-foreground mb-6">
-                  Check out our AI-powered predictions for upcoming matches
+                  {t.checkPredictions}
                 </p>
                 <Link href="/predictions">
                   <a>
                     <Button className="gap-2">
-                      View Predictions →
+                      {t.viewPredictions}
                     </Button>
                   </a>
                 </Link>
