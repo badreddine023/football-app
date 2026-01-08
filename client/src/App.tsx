@@ -5,12 +5,27 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
+import Fixtures from "./pages/Fixtures";
+import Results from "./pages/Results";
+import Standings from "./pages/Standings";
+import Predictions from "./pages/Predictions";
 
+/**
+ * Design Philosophy: Modern Sports Dashboard
+ * - Color Scheme: Electric Blue (#0066FF) primary with dark backgrounds
+ * - Typography: Poppins for headings, Inter for body text
+ * - Layout: Fixed sidebar navigation with main content area
+ * - Interactions: Smooth transitions and hover effects
+ */
 
 function Router() {
   return (
     <Switch>
       <Route path={"/"} component={Home} />
+      <Route path={"/fixtures"} component={Fixtures} />
+      <Route path={"/results"} component={Results} />
+      <Route path={"/standings"} component={Standings} />
+      <Route path={"/predictions"} component={Predictions} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
@@ -18,18 +33,10 @@ function Router() {
   );
 }
 
-// NOTE: About Theme
-// - First choose a default theme according to your design style (dark or light bg), than change color palette in index.css
-//   to keep consistent foreground/background color across components
-// - If you want to make theme switchable, pass `switchable` ThemeProvider and use `useTheme` hook
-
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider
-        defaultTheme="light"
-        // switchable
-      >
+      <ThemeProvider defaultTheme="light">
         <TooltipProvider>
           <Toaster />
           <Router />
