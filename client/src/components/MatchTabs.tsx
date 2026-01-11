@@ -31,7 +31,7 @@ export default function MatchTabs({ activeTab, onTabChange }: MatchTabsProps) {
 
   return (
     <div className="w-full bg-sidebar text-sidebar-foreground border-b border-sidebar-border/50">
-      <div className="flex items-center justify-between px-4 py-3 overflow-x-auto">
+      <div className={cn("flex items-center justify-between px-4 py-3 overflow-x-auto", isRTL && "flex-row-reverse")}>
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -55,7 +55,7 @@ export default function MatchTabs({ activeTab, onTabChange }: MatchTabsProps) {
       </div>
 
       {/* Sub-tabs for Yesterday/Today/Tomorrow */}
-      <div className="flex items-center gap-4 px-4 py-2 border-t border-sidebar-border/30 bg-sidebar/50">
+      <div className={cn("flex items-center gap-4 px-4 py-2 border-t border-sidebar-border/30 bg-sidebar/50", isRTL && "flex-row-reverse")}>
         <button className="text-xs font-bold text-sidebar-foreground/60 hover:text-sidebar-foreground transition-colors">
           أمس
         </button>

@@ -2,7 +2,7 @@
 @import "tw-animate-css";
 
 /* Import Poppins for headings and Inter for body */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Cairo:wght@300;400;500;600;700;800;900&display=swap');
 
 @custom-variant dark (&:is(.dark *));
 
@@ -84,6 +84,18 @@
   /* Font families */
   --font-heading: 'Poppins', sans-serif;
   --font-body: 'Inter', sans-serif;
+  --font-arabic: 'Cairo', sans-serif;
+}
+
+/* RTL Support */
+[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+
+[dir="rtl"] button,
+[dir="rtl"] [role="button"] {
+  text-align: right;
 }
 
 .dark {
@@ -121,6 +133,29 @@
   --sidebar-ring: #0066FF;
 }
 
+/* Arabic font styling */
+[lang="ar"],
+[dir="rtl"] {
+  font-family: var(--font-arabic);
+  letter-spacing: 0.5px;
+}
+
+[lang="ar"] h1,
+[lang="ar"] h2,
+[lang="ar"] h3,
+[lang="ar"] h4,
+[lang="ar"] h5,
+[lang="ar"] h6,
+[dir="rtl"] h1,
+[dir="rtl"] h2,
+[dir="rtl"] h3,
+[dir="rtl"] h4,
+[dir="rtl"] h5,
+[dir="rtl"] h6 {
+  font-family: var(--font-arabic);
+  font-weight: 700;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -132,6 +167,19 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
     @apply font-bold;
+  }
+  
+  [dir="rtl"] h1,
+  [dir="rtl"] h2,
+  [dir="rtl"] h3,
+  [dir="rtl"] h4,
+  [dir="rtl"] h5,
+  [dir="rtl"] h6 {
+    font-family: var(--font-arabic);
+  }
+  
+  [dir="rtl"] body {
+    font-family: var(--font-arabic);
   }
   h1 {
     @apply text-4xl;
