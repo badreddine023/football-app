@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Sidebar from "./Sidebar";
-import { Menu, X } from "lucide-react";
+import { Menu, X, User } from "lucide-react";
 import { Button } from "./ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
@@ -12,10 +12,10 @@ interface LayoutProps {
 
 export default function Layout({ children, activeRoute }: LayoutProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const { isRTL } = useLanguage();
+  const { isRTL, t } = useLanguage();
 
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="flex min-h-screen bg-[#121212] text-white">
       {/* Mobile Overlay */}
       {isSidebarOpen && (
         <div
@@ -24,12 +24,12 @@ export default function Layout({ children, activeRoute }: LayoutProps) {
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar / Navigation */}
       <div
         className={cn(
           "fixed inset-y-0 z-50 transition-transform duration-300 lg:translate-x-0 lg:static lg:block",
           isSidebarOpen ? "translate-x-0" : (isRTL ? "translate-x-full" : "-translate-x-full"),
-          "w-64"
+          "w-full lg:w-80"
         )}
       >
         <Sidebar activeRoute={activeRoute} />
@@ -37,23 +37,33 @@ export default function Layout({ children, activeRoute }: LayoutProps) {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-w-0">
-        {/* Mobile Header */}
-        <header className="lg:hidden flex items-center justify-between p-4 border-b bg-card sticky top-0 z-30">
+        {/* Mobile Header - Matching Screenshot */}
+        <header className="lg:hidden flex items-center justify-between p-4 border-b border-white/10 bg-[#1A1A1A] sticky top-0 z-30">
           <div className="flex items-center gap-2">
-             <h1 className="text-xl font-black font-heading tracking-tight text-primary">
-                FootScore
+            <User className="w-8 h-8 text-gray-400" />
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="text-right">
+              <h1 className="text-xl font-bold flex items-center gap-2">
+                {t.appTitle}
+                <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
+                  <div className="w-4 h-4 bg-white rounded-full" />
+                </div>
               </h1>
+              <p className="text-[10px] text-gray-400">{t.appSubtitle}</p>
+            </div>
           </div>
           <Button
             variant="ghost"
             size="icon"
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            className="text-white"
           >
             {isSidebarOpen ? <X /> : <Menu />}
           </Button>
         </header>
 
-        <main className="flex-1">
+        <main className="flex-1 overflow-y-auto">
           {children}
         </main>
       </div>

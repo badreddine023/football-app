@@ -31,6 +31,15 @@ export interface Translations {
   pts: string;
   liveFootball: string;
   realTimeUpdates: string;
+  appTitle: string;
+  appSubtitle: string;
+  yesterday: string;
+  today: string;
+  tomorrow: string;
+  importantDates: string;
+  leagues: string;
+  downloadApp: string;
+  easyFootballApp: string;
 }
 
 export const translations: Record<Language, Translations> = {
@@ -64,6 +73,15 @@ export const translations: Record<Language, Translations> = {
     pts: "Pts",
     liveFootball: "Live Football Scores & Predictions",
     realTimeUpdates: "Get real-time updates on matches, standings, and predictions from all major leagues",
+    appTitle: "Jdwel",
+    appSubtitle: "Standings & Matches Simply",
+    yesterday: "Yesterday",
+    today: "Today",
+    tomorrow: "Tomorrow",
+    importantDates: "Important Dates",
+    leagues: "Leagues",
+    downloadApp: "Download App",
+    easyFootballApp: "The Easiest Football App",
   },
   ar: {
     home: "الرئيسية",
@@ -95,5 +113,14 @@ export const translations: Record<Language, Translations> = {
     pts: "نقاط",
     liveFootball: "نتائج وتوقعات كرة القدم المباشرة",
     realTimeUpdates: "احصل على تحديثات مباشرة للمباريات والترتيب والتوقعات من جميع الدوريات الكبرى",
+    appTitle: "جدول",
+    appSubtitle: "الترتيب والمباريات ببساطة",
+    yesterday: "أمس",
+    today: "مباريات اليوم",
+    tomorrow: "غداً",
+    importantDates: "أهم التواريخ",
+    leagues: "البطولات",
+    downloadApp: "حمل التطبيق",
+    easyFootballApp: "تطبيق الكورة الأسهل",
   }
 };

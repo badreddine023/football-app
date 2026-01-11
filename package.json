@@ -12,7 +12,7 @@
     "check": "tsc --noEmit",
     "format": "prettier --write .",
     "predeploy": "pnpm build",
-    "deploy": "gh-pages -d dist/public"
+    "deploy": "gh-pages -d dist/public -b gh-pages"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
