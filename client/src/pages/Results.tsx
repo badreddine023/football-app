@@ -1,4 +1,4 @@
-import Sidebar from "@/components/Sidebar";
+import Layout from "@/components/Layout";
 import HeroBanner from "@/components/HeroBanner";
 import MatchCard from "@/components/MatchCard";
 
@@ -40,21 +40,18 @@ export default function Results() {
   ];
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <Sidebar activeRoute="/results" />
-      <main className="flex-1 ml-64">
-        <HeroBanner
-          title="Recent Results"
-          subtitle="Latest match results from all major leagues"
-        />
-        <div className="container mx-auto px-4 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {finishedMatches.map((match) => (
-              <MatchCard key={match.id} {...match} />
-            ))}
-          </div>
+    <Layout activeRoute="/results">
+      <HeroBanner
+        title="Recent Results"
+        subtitle="Latest match results from all major leagues"
+      />
+      <div className="container mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {finishedMatches.map((match) => (
+            <MatchCard key={match.id} {...match} />
+          ))}
         </div>
-      </main>
-    </div>
+      </div>
+    </Layout>
   );
 }

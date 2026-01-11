@@ -1,4 +1,4 @@
-import Sidebar from "@/components/Sidebar";
+import Layout from "@/components/Layout";
 import HeroBanner from "@/components/HeroBanner";
 import MatchCard from "@/components/MatchCard";
 
@@ -34,21 +34,18 @@ export default function Fixtures() {
   ];
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <Sidebar activeRoute="/fixtures" />
-      <main className="flex-1 ml-64">
-        <HeroBanner
-          title="Upcoming Fixtures"
-          subtitle="All scheduled matches from major football leagues"
-        />
-        <div className="container mx-auto px-4 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {upcomingMatches.map((match) => (
-              <MatchCard key={match.id} {...match} />
-            ))}
-          </div>
+    <Layout activeRoute="/fixtures">
+      <HeroBanner
+        title="Upcoming Fixtures"
+        subtitle="All scheduled matches from major football leagues"
+      />
+      <div className="container mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {upcomingMatches.map((match) => (
+            <MatchCard key={match.id} {...match} />
+          ))}
         </div>
-      </main>
-    </div>
+      </div>
+    </Layout>
   );
 }

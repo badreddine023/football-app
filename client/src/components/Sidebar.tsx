@@ -19,8 +19,8 @@ export default function Sidebar({ activeRoute }: SidebarProps) {
 
   return (
     <aside className={cn(
-      "fixed top-0 h-screen w-64 bg-sidebar text-sidebar-foreground flex flex-col border-sidebar-border shadow-2xl z-50 transition-all duration-300",
-      isRTL ? "right-0 border-l" : "left-0 border-r"
+      "h-full w-64 bg-sidebar text-sidebar-foreground flex flex-col border-sidebar-border shadow-2xl transition-all duration-300",
+      isRTL ? "border-l" : "border-r"
     )}>
       {/* Logo Section */}
       <div className="p-8 border-b border-sidebar-border/50">
